@@ -8,6 +8,7 @@ docker-compose up ile çalıştırılabilir. Bu şekilde ayağa kaldırıldıkta
  Ekleme ve güncelleme sonrası Redis pub/sub yapısı ile COnfigurationReader a bilgi verilip, configurasyonun güncel hali dbden çekilir.
 
 -İki tane test servisi yazıldı. 
+
 -Service-A -> http://localhost:8080/configurations/get-service-a
 
 -Service-B -> http://localhost:8081/configurations/get-service-b
