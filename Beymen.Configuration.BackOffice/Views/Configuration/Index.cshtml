@@ -1,0 +1,59 @@
+﻿@model IEnumerable<Beymen.Configuration.BackOffice.Models.ConfigurationModel>
+@{
+    ViewData["Title"] = "Configuration List";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div class="form-group">
+    <label for="filterInput">Filter:</label>
+    <input type="text" class="form-control" id="filterInput" placeholder="Enter configuration name">
+</div>
+<div class="mb-3">
+    <a href="@Url.Action("Create")" class="btn btn-success">Create</a>
+</div>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Value</th>
+            <th>IsActive</th>
+            <th>ApplicationName</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody id="configurationsTableBody">
+        @foreach (var configuration in Model)
+        {
+            <tr>
+                <td>@configuration.Name</td>
+                <td>@configuration.Type</td>
+                <td>@configuration.Value</td>
+                <td>@(configuration.IsActive ? "Yes" : "No")</td>
+                <td>@configuration.ApplicationName</td>
+                <td>
+                    <a class="btn btn-primary" href="@Url.Action("Edit", new { id = configuration.Id })">Edit</a>
+                    <a class="btn btn-danger" href="@Url.Action("Delete", new { id = configuration.Id })">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<nav aria-label="Configuration list pagination">
+    <ul class="pagination justify-content-center" id="pagination"></ul>
+</nav>
+
+@section scripts{
+    <script>
+    $(document).ready(function () {
+        $('#filterInput').on('keyup', function () {
+            var searchText = $(this).val().toLowerCase();
+            $('#configurationsTableBody tr').filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(searchText) > -1);
+            });
+        });
+    });
+    </script>
+}

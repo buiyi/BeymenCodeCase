@@ -1,0 +1,73 @@
+﻿version: "3.8"
+
+services:
+  redis:
+    image: redis
+    container_name: beymenredis
+    restart: always
+    ports:
+      - "1453:6379"
+    networks:
+      - beymenconfig
+
+  mongo:
+    image: mongo
+    container_name: beymenmongo
+    restart: always
+    ports:
+    - "27017:27017"
+    networks:
+    - beymenconfig
+  
+  mongo-seed:
+    build: ./Beymen.Seed
+    depends_on:
+      - mongo
+    networks:
+    - beymenconfig
+
+  web.api:
+    image: beymencase
+    build:
+      context: .
+      dockerfile: Beymen.Configuration.BackOffice/Dockerfile
+    container_name: web.api
+    ports:
+      - "80:80"
+    links:
+      - redis
+    environment:
+        - DatabaseSettings__ConnectionString=mongodb://mongo:27017
+        - DatabaseSettings__RedisConnectionString=redis:6379,abortConnect=false
+    depends_on:
+        - redis
+        - mongo
+    networks:
+      - beymenconfig
+
+  service_a:
+    image: service_a
+    build:
+      context: .
+      dockerfile: Beymen.Service-A/Dockerfile
+    container_name: service_a
+    ports:
+      - "8080:8080"
+    networks:
+      - beymenconfig  
+
+  service_b:
+    image: service_b
+    build:
+      context: .
+      dockerfile: Beymen.Service-B/Dockerfile
+    container_name: service_b
+    ports:
+      - "8081:8081"
+    networks:
+      - beymenconfig  
+  
+networks:
+  beymenconfig:
+    driver: bridge
+
