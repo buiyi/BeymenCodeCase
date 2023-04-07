@@ -10,6 +10,7 @@ docker-compose up ile çalıştırılabilir. Bu şekilde ayağa kaldırıldıkta
 -İki tane test servisi yazıldı. 
 
 -Service-A -> http://localhost:8080/configurations/get-service-a
+
 -Service-B -> http://localhost:8081/configurations/get-service-b
 
 ConfigurationReader sınıfı içerisinde cacheleme yapıldı. Eğer veri cachelenmiş ise dbye bakmadan getiriyor. Eğer mongodbye erişim yoksa cachete en son çekilen veri geri
